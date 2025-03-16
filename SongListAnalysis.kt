@@ -3,18 +3,18 @@
 fun main() {
     val whichOptionToRun = 1
     when(whichOptionToRun) {
-        1 -> doesEveryLineContainRightCarat()
+        1 -> doesEveryLineContainExactlyOneCarat()
         else -> println("Unknown option")
     }
     println("Program ended")
 }
 
-private fun doesEveryLineContainRightCarat() {
+private fun doesEveryLineContainExactlyOneCarat() {
     var result = true
     for (line in TO_INSTALL.split("\n")) {
         if (line.isBlank()) continue
         if (line.startsWith("*(")) continue
-        if (line.count{it == '^'} > 1) {
+        if (line.count{it == '^'} != 1) {
             println(line)
             result = false
         }
