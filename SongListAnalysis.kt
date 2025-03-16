@@ -4,6 +4,7 @@ fun main() {
     val whichOptionToRun = 1
     when(whichOptionToRun) {
         1 -> simpleCheck(::containsExactlyOneCaratIfNecessary)
+        2 -> simpleCheck(::doesNotContainEmptyFootnote)
         else -> println("Unknown option")
     }
     println("Program ended")
@@ -29,3 +30,6 @@ private fun simpleCheck(predicate: (String, Boolean) -> Boolean) {
 private fun containsExactlyOneCaratIfNecessary(line: String, ignored: Boolean) = line.isBlank()
     || line.startsWith("*(")
     || (line.count{it == '^'} == 1)
+
+    
+private fun doesNotContainEmptyFootnote(line: String, ignored: Boolean) = !line.contains("(^)")
