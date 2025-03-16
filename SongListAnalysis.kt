@@ -1,11 +1,10 @@
 // .................................................................
 
 fun main() {
-    val whichOptionToRun = 3
+    val whichOptionToRun = 1
     when(whichOptionToRun) {
         1 -> simpleCheck(::containsExactlyOneCaratIfNecessary)
-        2 -> simpleCheck(::doesNotContainEmptyFootnote)
-        3 -> simpleCheck(::footnoteWithinRange)
+        2 -> simpleCheck(::footnoteValid)
         else -> println("Unknown option")
     }
     println("Program ended")
@@ -32,21 +31,19 @@ private fun containsExactlyOneCaratIfNecessary(line: String, ignored: Boolean) =
     || line.startsWith("*(")
     || (line.count{it == '^'} == 1)
 
-private fun doesNotContainEmptyFootnote(line: String, ignored: Boolean) = !line.contains("(^)")
-
-private fun footnoteWithinRange(line: String, toInstall: Boolean): Boolean {
+private fun footnoteValid(line: String, toInstall: Boolean): Boolean {
     if (line.isBlank()) return true
     if (line.startsWith("*(")) return true
-    val penultimateChar = line[line.length - 2]
-    val previous = line[line.length - 3]
-    val footnoteIndex = if (previous == '^')
-        penultimateChar.toString().toIntOrNull()
-    else
-        (previous.toString() + penultimateChar.toString()).toIntOrNull()
+    val footnote = line.substringAfterLast(" ")
+    if (footnote[0] != '(') return false
+    if (footnote[1] != '^') return false
+    if (!footnote.endsWith(")")) return false
+    
+    val footnoteIndex = footnote.substring(2, footnote.length - 1).toIntOrNull()
     if (footnoteIndex == null) return false
     if (footnoteIndex < 0) return false
     if (toInstall)
         return footnoteIndex <= 7
     else
-        return footnoteIndex <= 19
+       return footnoteIndex <= 19
 }
