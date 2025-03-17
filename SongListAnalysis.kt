@@ -6,6 +6,7 @@ fun main() {
         1 -> simpleCheck(::containsExactlyOneCaratIfNecessary)
         2 -> simpleCheck(::footnoteValid)
         3 -> simpleCheck(::originsValid)
+        4 -> inAlphabeticalOrder()
         else -> println("Unknown option")
     }
     println("Program ended")
@@ -71,4 +72,37 @@ private fun originsValid(line: String, toInstall: Boolean): Boolean {
     }
     
     return true
+}
+
+private fun inAlphabeticalOrder() {
+    inAlphabeticalOrder("install", TO_INSTALL.split("\n"))
+    inAlphabeticalOrder("not to install", NOT_TO_INSTALL.split("\n"))
+}
+
+private fun inAlphabeticalOrder(desc: String, lines: List<String>) {
+    val newLines = lines.map{
+        var newLine = if (it.startsWith("*("))
+            "*" + it.substring(2, it.length - 1)
+        else it
+        if (newLine.startsWith("*A "))
+            newLine = "*" + newLine.substring(3)
+        if (newLine.startsWith("*The "))
+            newLine = "*" + newLine.substring(5)
+        
+        newLine.replace("(original)", "(a)")
+            .replace("(main GB version)", "(main GB version 1)")
+            .replace("(hard GB version)", "(main GB version 2)")
+            .replace(".", "")
+    }
+    for (i in 0 until newLines.size - 1) {
+        // Special cases which would be too difficult to generalize so we will just check them manually  
+        if (newLines[i + 1].startsWith("*Lesson 2 By DJ")) continue
+        
+        
+        if (newLines[i].compareTo(newLines[i + 1], ignoreCase = true) > 0) {
+            println("$desc: The first string out of order is: ${newLines[i + 1]}")
+            return
+        }
+    }
+    println("$desc: order okay")
 }
