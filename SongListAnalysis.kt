@@ -1,7 +1,7 @@
 // .................................................................
 
 fun main() {
-    val whichOptionToRun = 1
+    val whichOptionToRun = 4
     when(whichOptionToRun) {
         1 -> simpleCheck(::containsExactlyOneCaratIfNecessary)
         2 -> simpleCheck(::footnoteValid)
@@ -84,21 +84,19 @@ private fun inAlphabeticalOrder(desc: String, lines: List<String>) {
         var newLine = if (it.startsWith("*("))
             "*" + it.substring(2, it.length - 1)
         else it
-        if (newLine.startsWith("*A "))
+        if (newLine.startsWith("*A ") && !newLine.startsWith("*A ("))
             newLine = "*" + newLine.substring(3)
         if (newLine.startsWith("*The "))
             newLine = "*" + newLine.substring(5)
         
-        newLine.replace("(original)", "(a)")
+        newLine.replace("(original)", "(0)")
             .replace("(main GB version)", "(main GB version 1)")
             .replace("(hard GB version)", "(main GB version 2)")
             .replace(".", "")
-    }
+            .replace("Lesson By DJ", "Lesson 1 By DJ")
+            .replace("5 6 7 8", "5678")
+    }.filter{!it.isBlank()}
     for (i in 0 until newLines.size - 1) {
-        // Special cases which would be too difficult to generalize so we will just check them manually  
-        if (newLines[i + 1].startsWith("*Lesson 2 By DJ")) continue
-        
-        
         if (newLines[i].compareTo(newLines[i + 1], ignoreCase = true) > 0) {
             println("$desc: The first string out of order is: ${newLines[i + 1]}")
             return
