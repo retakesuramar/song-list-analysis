@@ -1,12 +1,16 @@
 // ...................................................................................................................................
 
 fun main() {
+    var result = true
     for (i in 1..6) {
-        val result = runOption(i)
+        result = runOption(i)
         if (!result) {
             println("Failed on $i")
         }
         if (!result) break // some weird bug with Kotlin Playground meant it didn't work if this was inside the if block
+    }
+    if (result) {
+        println("Everything was successful")
     }
     println("Program ended")
 }
