@@ -1,18 +1,28 @@
 // .................................................................
 
 fun main() {
-    val whichOptionToRun = 1
-    when(whichOptionToRun) {
-        1 -> simpleCheck(::containsExactlyOneCaratIfNecessary)
-        2 -> simpleCheck(::footnoteValid)
-        3 -> simpleCheck(::originsValid)
-        4 -> inAlphabeticalOrder()
-        else -> println("Unknown option")
+    for (i in 1..4) {
+        val result = runOption(i)
+        if (!result) {
+            println("Failed on $i")
+        }
+        if (!result) break
     }
     println("Program ended")
 }
 
-private fun simpleCheck(predicate: (String, Boolean) -> Boolean) {
+private fun runOption(option: Int) = when(option) {
+    1 -> simpleCheck(::containsExactlyOneCaratIfNecessary)
+    2 -> simpleCheck(::footnoteValid)
+    3 -> simpleCheck(::originsValid)
+    4 -> inAlphabeticalOrder()
+    else -> run {
+        println("Unknown option")
+        false
+    }
+}
+
+private fun simpleCheck(predicate: (String, Boolean) -> Boolean): Boolean {
     var result = true
     for (line in TO_INSTALL.split("\n")) {
         if (!predicate(line, true)) {
@@ -27,6 +37,7 @@ private fun simpleCheck(predicate: (String, Boolean) -> Boolean) {
         }
     }
     println("result: $result")
+    return result
 }
 
 private fun containsExactlyOneCaratIfNecessary(line: String, ignored: Boolean) = line.isBlank()
@@ -74,12 +85,13 @@ private fun originsValid(line: String, toInstall: Boolean): Boolean {
     return true
 }
 
-private fun inAlphabeticalOrder() {
-    inAlphabeticalOrder("install", TO_INSTALL.split("\n"))
-    inAlphabeticalOrder("not to install", NOT_TO_INSTALL.split("\n"))
+private fun inAlphabeticalOrder(): Boolean {
+    var result = inAlphabeticalOrder("install", TO_INSTALL.split("\n"))
+    result = inAlphabeticalOrder("not to install", NOT_TO_INSTALL.split("\n")) && result
+    return result
 }
 
-private fun inAlphabeticalOrder(desc: String, lines: List<String>) {
+private fun inAlphabeticalOrder(desc: String, lines: List<String>): Boolean {
     val newLines = lines.map{
         var newLine = if (it.startsWith("*("))
             "*" + it.substring(2, it.length - 1)
@@ -108,8 +120,9 @@ private fun inAlphabeticalOrder(desc: String, lines: List<String>) {
     for (i in 0 until newLines.size - 1) {
         if (newLines[i].compareTo(newLines[i + 1], ignoreCase = true) > 0) {
             println("$desc: The first string out of order is: ${newLines[i + 1]}")
-            return
+            return false
         }
     }
     println("$desc: order okay")
+    return true
 }
