@@ -11,6 +11,7 @@ fun main() {
     }
     if (result) {
         println("Everything was successful")
+        groupToInstallByFootnote()
     }
     println("Program ended")
 }
@@ -204,4 +205,15 @@ private fun bracketedParts(input: String): List<String> {
         remainder = remainder.substringAfter("(")
     }
     return output
+}
+
+private fun groupToInstallByFootnote() {
+    val lines = TO_INSTALL.split("\n")
+    println()
+    for (i in 0..7) {
+        val forThisIndex = lines.filter{it.endsWith("(^$i)")}
+        forThisIndex.forEach{println(it)}
+        println("Count: ${forThisIndex.size}")
+        println()
+    }
 }
