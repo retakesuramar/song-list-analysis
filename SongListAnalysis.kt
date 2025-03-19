@@ -1,7 +1,7 @@
 // .................................................................
 
 fun main() {
-    val whichOptionToRun = 4
+    val whichOptionToRun = 1
     when(whichOptionToRun) {
         1 -> simpleCheck(::containsExactlyOneCaratIfNecessary)
         2 -> simpleCheck(::footnoteValid)
@@ -95,6 +95,15 @@ private fun inAlphabeticalOrder(desc: String, lines: List<String>) {
             .replace(".", "")
             .replace("Lesson By DJ", "Lesson 1 By DJ")
             .replace("5 6 7 8", "5678")
+            .replace("_danger", "Danger")
+            .replace("'Yap Yap'", "Yap Yap")
+            .replace("*O-Ha", "*O Ha")
+            .replace("Over & Over", "Over And Over")
+            .replace("Club Another version", "Club zzAnother version")
+            .replace("R10K", "R9K")
+            .replace("Straw-buh-buh-buh-buh-berry", "Strawbuhbuhbuhbuhberry")
+            .replace("*Wa Ni Natte Odorou (Kids)", "*Wa Ni Natte Odorou (0) (Kids)")
+            .replace("You're", "Youre")
     }.filter{!it.isBlank()}
     for (i in 0 until newLines.size - 1) {
         if (newLines[i].compareTo(newLines[i + 1], ignoreCase = true) > 0) {
