@@ -1,4 +1,4 @@
-// .................................................................
+// ...................................................................................................................................
 
 fun main() {
     for (i in 1..5) {
@@ -6,7 +6,7 @@ fun main() {
         if (!result) {
             println("Failed on $i")
         }
-        if (!result) break
+        if (!result) break // some weird bug with Kotlin Playground meant it didn't work if this was inside the if block
     }
     println("Program ended")
 }
