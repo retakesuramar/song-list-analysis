@@ -1,7 +1,7 @@
 // ...................................................................................................................................
 
 fun main() {
-    for (i in 1..5) {
+    for (i in 1..6) {
         val result = runOption(i)
         if (!result) {
             println("Failed on $i")
@@ -17,6 +17,7 @@ private fun runOption(option: Int) = when(option) {
     3 -> simpleCheck(::originsValid)
     4 -> inAlphabeticalOrder()
     5 -> duplicated()
+    6 -> missingOriginal()
     else -> run {
         println("Unknown option")
         false
@@ -146,4 +147,57 @@ private fun duplicated(): Boolean {
     }
     println("no duplicates")
     return true
+}
+
+private fun missingOriginal(): Boolean {
+    var result = missingOriginal(
+        TO_INSTALL.split("\n"),
+        NOT_TO_INSTALL.split("\n")
+    )
+    return if (result) {
+        missingOriginal(
+            NOT_TO_INSTALL.split("\n"),
+            TO_INSTALL.split("\n")
+        )
+    } else false
+}
+
+private fun missingOriginal(left: List<String>, right: List<String>): Boolean {
+    val removeOriginsAndFootnote: (String) -> String = {
+        it.substringBeforeLast("(").substringBeforeLast("(").trim()
+    }
+    val rightWithoutOriginsAndFootnote = right.map{removeOriginsAndFootnote(it)}
+    for (line in left) {
+        if (line.isBlank()) continue
+        if (line.startsWith("*(")) continue
+        val without = removeOriginsAndFootnote(line)
+        if (!without.contains("(")) continue
+        val beforeOpen = without.substringBefore("(").trim()
+        if (rightWithoutOriginsAndFootnote.contains(beforeOpen)) {
+            println(line)
+            return false
+        }
+        val bracketedParts = bracketedParts(without)
+        var testString = beforeOpen
+        for (part in bracketedParts) {
+            testString = "$testString $part"
+            if (rightWithoutOriginsAndFootnote.contains(testString)) {
+                println(line)
+                return false
+            }
+        }
+    }
+    return true
+}
+
+private fun bracketedParts(input: String): List<String> {
+    val output = mutableListOf<String>()
+    var remainder = input
+    while (remainder.contains("(")) {
+        val afterOpen = remainder.substringAfter("(")
+        val bracketed = afterOpen.substringBefore(")")
+        output.add("($bracketed)")
+        remainder = remainder.substringAfter("(")
+    }
+    return output
 }
