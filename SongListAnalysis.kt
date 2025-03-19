@@ -1,7 +1,7 @@
 // .................................................................
 
 fun main() {
-    for (i in 1..4) {
+    for (i in 1..5) {
         val result = runOption(i)
         if (!result) {
             println("Failed on $i")
@@ -16,6 +16,7 @@ private fun runOption(option: Int) = when(option) {
     2 -> simpleCheck(::footnoteValid)
     3 -> simpleCheck(::originsValid)
     4 -> inAlphabeticalOrder()
+    5 -> duplicated()
     else -> run {
         println("Unknown option")
         false
@@ -124,5 +125,25 @@ private fun inAlphabeticalOrder(desc: String, lines: List<String>): Boolean {
         }
     }
     println("$desc: order okay")
+    return true
+}
+
+private fun duplicated(): Boolean {
+    val stripDown: (String) -> String = {
+        it.substringBeforeLast("(")
+            .substringBeforeLast("(")
+            .replace(" (original)", "")
+    }
+    val notToInstallWithout = NOT_TO_INSTALL.split("\n")
+        .map{stripDown(it)}
+    for (line in TO_INSTALL.split("\n")) {
+        val without = stripDown(line)
+        
+        if (notToInstallWithout.contains(without)) {
+            println(line)
+            return false
+        }
+    }
+    println("no duplicates")
     return true
 }
