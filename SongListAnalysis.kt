@@ -66,7 +66,7 @@ private fun footnoteValid(line: String, toInstall: Boolean): Boolean {
     if (footnoteIndex == null) return false
     if (footnoteIndex < 0) return false
     if (toInstall)
-        return footnoteIndex <= 7
+        return footnoteIndex <= 6
     else
        return footnoteIndex <= 19
 }
@@ -213,7 +213,7 @@ private fun bracketedParts(input: String): List<String> {
 private fun groupToInstallByFootnote() {
     val lines = TO_INSTALL.split("\n")
     println()
-    for (i in 0..7) {
+    for (i in 0..6) {
         val forThisIndex = lines.filter{it.endsWith("(^$i)")}
         forThisIndex.forEach{println(it)}
         println("Count: ${forThisIndex.size}")
