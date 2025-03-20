@@ -1,5 +1,8 @@
 // ...................................................................................................................................
 
+private fun List<String>.containsIgnoreCase(candidate: String)
+    = this.map{it.lowercase()}.contains(candidate.lowercase())
+
 fun main() {
     var result = true
     for (i in 1..6) {
@@ -145,7 +148,7 @@ private fun duplicated(): Boolean {
     for (line in TO_INSTALL.split("\n")) {
         val without = stripDown(line)
         
-        if (notToInstallWithout.contains(without)) {
+        if (notToInstallWithout.containsIgnoreCase(without)) {
             println(line)
             return false
         }
@@ -178,7 +181,7 @@ private fun missingOriginal(left: List<String>, right: List<String>): Boolean {
         val without = removeOriginsAndFootnote(line)
         if (!without.contains("(")) continue
         val beforeOpen = without.substringBefore("(").trim()
-        if (rightWithoutOriginsAndFootnote.contains(beforeOpen)) {
+        if (rightWithoutOriginsAndFootnote.containsIgnoreCase(beforeOpen)) {
             println(line)
             return false
         }
@@ -186,7 +189,7 @@ private fun missingOriginal(left: List<String>, right: List<String>): Boolean {
         var testString = beforeOpen
         for (part in bracketedParts) {
             testString = "$testString $part"
-            if (rightWithoutOriginsAndFootnote.contains(testString)) {
+            if (rightWithoutOriginsAndFootnote.containsIgnoreCase(testString)) {
                 println(line)
                 return false
             }
