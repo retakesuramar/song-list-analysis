@@ -140,9 +140,15 @@ private fun inAlphabeticalOrder(desc: String, lines: List<String>): Boolean {
 
 private fun duplicated(): Boolean {
     val stripDown: (String) -> String = {
-        it.substringBeforeLast("(")
-            .substringBeforeLast("(")
-            .replace(" (original)", "")
+        if (it.startsWith("*("))
+            "*" + it.substring(2)
+                .substringBeforeLast("-")
+                .replace(" (original)", "")
+                .trim()
+        else
+            it.substringBeforeLast("(")
+                .substringBeforeLast("(")
+                .replace(" (original)", "")
     }
     val notToInstallWithout = NOT_TO_INSTALL.split("\n")
         .map{stripDown(it)}
