@@ -68,7 +68,7 @@ private fun footnoteValid(line: String, toInstall: Boolean): Boolean {
     if (toInstall)
         return footnoteIndex <= 6
     else
-       return footnoteIndex <= 19
+       return footnoteIndex <= 20
 }
 
 private fun originsValid(line: String, toInstall: Boolean): Boolean {
