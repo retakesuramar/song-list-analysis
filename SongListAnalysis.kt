@@ -221,8 +221,9 @@ private fun groupToInstallByFootnote() {
     val lines = TO_INSTALL.split("\n")
     println()
     for (i in 0..6) {
+        println("(^$i)")
         val forThisIndex = lines.filter{it.endsWith("(^$i)")}
-        forThisIndex.forEach{println(it)}
+        forThisIndex.forEach{println(it.substringBeforeLast("(").trim())}
         println("Count: ${forThisIndex.size}")
         println()
     }
