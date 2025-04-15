@@ -126,6 +126,7 @@ private fun inAlphabeticalOrder(desc: String, lines: List<String>): Boolean {
             .replace("Straw-buh-buh-buh-buh-berry", "Strawbuhbuhbuhbuhberry")
             .replace("*Wa Ni Natte Odorou (Kids)", "*Wa Ni Natte Odorou (0) (Kids)")
             .replace("You're", "Youre")
+            .replace("*Love & Joy", "*Love 0 Joy")
     }.filter{!it.isBlank()}
     for (i in 0 until newLines.size - 1) {
         if (newLines[i].compareTo(newLines[i + 1], ignoreCase = true) > 0) {
